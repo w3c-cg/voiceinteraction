@@ -2016,26 +2016,45 @@
     <h3 id="usersettings">
       <span class="secno">3.3.6 </span>User Settings
     </h3>
-
-	<p>The need for user settings in an intelligent personal assistant stems directly from the
-	  fact that a truly "personal" assistant must be configurable to the unique individual.
-	  Without specific, user-defined settings, an IPA would be a generic tool, severely
-	  limiting its utility and effectiveness. There are, however, some use cases where this
-	  is wanted.</p>
+    <p>The need for user settings in an intelligent personal assistant stems
+        directly from the
+        fact that a truly <em>personal</em> assistant must be configurable to the
+        unique individual. Without specific, user-defined settings, an IPA is not
+        able to adapt to the user. There are, however, some use cases where this is
+        wanted, e.g. in kiosk settings.</p>
 
 	<p>The user's language when interacting with an IPA is one example of such a setting.
 	  The actual language can come into play at various occasions.</p>
 	<ol>
-	  <li>Language determined from the spoke or written utterance itself</li>
-	  <li>Language setting provided with a user request</li>
+      <li>Language setting provided with a user request</li>
+      <li>Language determined from the spoke or written utterance itself</li>
+      <li>Language derived from other data that is passed along with the 
+        request, such as location</li>
 	  <li>Language stored in the IPA as a user preference</li>
 	  <li>System default language</li>
 	</ol>
-	<p>The settings will overruled in that order, meaning that if the language cannot be
-	determined by one option, it will fall back to the next.</p>
+    <p>The settings will be applied in that order of precedence, meaning that if the language
+        cannot be determined by one option, it will fall back to the next. This
+        allows users to override the settings at any time so that the current
+        request matches the language and will guarantee that a
+        corresponding settings exists per user request.</p>
 
 	<p>Similarly, other settings may be used to configure usage of the IPA with
 	  comparable rules to override.</p>
+      
+    <p>Derived from the example of language settings, the following general
+        approach may be used to determine user settings in an IPA where
+        the settings will be applied in that order of precedence.</p>
+    <ol>
+        <li>Settings provided with a user request</li>
+        <li>Settings determined from data of the request</li>
+        <li>Settings stored in the IPA as a user preference</li>
+        <li>System default settings</li>
+    </ol>
+    <p>Storing user preferences must be secured and should not be
+        accessible by other users. This may be done, e.g., by storing
+        the encrypted preferences in a user-specific file or database that is
+        not accessible to other users.</p>
     
     <h3 id="securityprivacy">
         <span class="secno">3.3.7 </span>Security and Privacy
