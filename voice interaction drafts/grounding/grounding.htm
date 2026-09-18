@@ -1,0 +1,200 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML+RDFa 1.1//EN' 'http://www.w3.org/MarkUp/DTD/xhtml-rdfa-2.dtd'>
+<html dir="ltr" about="" property="dcterms:language" content="en"
+    version="XHTML+RDFa 1.1"
+    xmlns="http://www.w3.org/1999/xhtml"
+    prefix='bibo: http://purl.org/ontology/bibo/' typeof="bibo:Document">
+<head>
+    <title>Intelligent Personal Assistant Architecture</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <link href="../cg-draft.css" rel="stylesheet" type="text/css">
+    <script src="../html-table-of-contents.js" type="text/javascript"></script>
+</head>
+<body onload="htmlTableOfContents();">
+    <div class="head">
+        <p>
+            <a href="http://www.w3.org/"> <img width="72"
+                height="48" src="http://www.w3.org/Icons/w3c_home"
+                alt="W3C"></a>
+        </p>
+
+        <h1 property="dcterms:title" class="title" id="title">Intelligent
+            Personal Assistant Architecture</h1>
+        <h2 property="bibo:subtitle" id="subtitle">Grounding in Voice Dialogs</h2>
+        <dl>
+            <dt>Latest version</dt>
+            <dd>
+                Last modified: September 19, 2026 <a
+                    href="tbd/a>
+                (GitHub repository)
+            </dd>
+            <dd>
+                <a
+                    href="tbd">HTML
+                    rendered version</a>
+            </dd>
+            <dt>Editors</dt>
+            <dd>
+                Dirk Schnelle-Walka<br /> 
+                Deborah Dahl, Conversational Technologies
+            </dd>
+        </dl>
+
+        <p class="copyright">
+            Copyright &copy; 2026 the Contributors to the Voice
+            Interaction Community Group, published by the <a
+                href="http://www.w3.org/community/voiceinteraction/">Voice
+                Interaction Community Group</a> under the <a
+                href="https://www.w3.org/community/about/agreements/cla/">W3C
+                Community Contributor License Agreement (CLA)</a>. A
+            human-readable <a
+                href="http://www.w3.org/community/about/agreements/cla-deed/">summary</a>
+            is available.
+        </p>
+
+        <hr>
+    </div>
+
+    <h2 id="abstract">Abstract</h2>
+
+    <p>
+        This document describes a general architecture of Intelligent
+        Personal Assistants and explores the potential for
+        standardization. It is meant to be a first structured
+        exploration of Intelligent Personal Assistants by identifying
+        the components and their tasks. Subsequent work is expected to
+        detail the interaction among the identified components and how
+        they ought to perform their task as well as their actual tasks
+        respectively. This document may need to be updated if any
+        changes result of that detailing work. It extends and refines
+        the description of the previous versions <a
+            href="https://w3c.github.io/voiceinteraction/voice%20interaction%20drafts/paArchitecture/paArchitecture-1.2.htm">Architecture
+            and Potential for Standardization Version 1.2</a>. The changes
+        primarily consist of clarifications and additional architectural
+        details in new and expanded figures, include input and output
+        data paths.
+    </p>
+
+    <h2>Status of This Document</h2>
+
+    <p>
+        <em>This specification was published by the <a
+            href="http://www.w3.org/community/voiceinteraction/">Voice
+                Interaction Community Group</a>. It is not a W3C Standard
+            nor is it on the W3C Standards Track. Please note that under
+            the <a
+            href="http://www.w3.org/community/about/agreements/cla/">W3C&nbsp;</a></em><em><a
+            href="http://www.w3.org/community/about/agreements/cla/">Community
+                Contributor License Agreement (CLA)</a> there is a limited
+            opt-out and other conditions apply. Learn more about <a
+            href="http://www.w3.org/community/">W3C Community and
+                Business Groups</a>.</em>
+    </p>
+    <p>
+        Comments should be sent to the Voice Interaction Community Group
+        public mailing list (public-voiceinteraction@w3.org), archived
+        at <a
+            href="https://lists.w3.org/Archives/Public/public-voiceinteraction/">https://lists.w3.org/Archives/Public/public-voiceinteraction</a>
+    </p>
+
+    <h2 class="introductory">Table of Contents</h2>
+    <div id="toc"></div>
+
+    <!-- OddPage -->
+    <h1 id="introduction">
+        <span class="secno">1. </span>Introduction
+    </h1>
+    <p>Intelligent Personal Assistants, conversational agents, and
+        Large Language Model (LLM)-driven autonomous systems are
+        increasingly integrated into daily life and critical business
+        operations. While early assistants relied primarily on
+        single-turn command execution, modern systems participate in
+        complex, multi-turn interactions and execute actions directly in
+        enterprise environments. However, as these systems scale in
+        capability, a fundamental challenge has emerged: standard
+        language models often operate by assuming understanding rather
+        than actively verifying it.</p>
+
+    <p>
+        In human communication, effective collaboration relies on <strong>grounding</strong>—the
+        ongoing, interactive process of establishing shared knowledge,
+        mutual beliefs, and clear context to prevent misunderstandings.
+        Standard language models, by contrast, are typically fine-tuned
+        to follow direct instructions. Rather than taking deliberate
+        dialogue steps to clarify ambiguous requests, acknowledge key
+        details, or repair misconceptions, current models tend to
+        default to presumptive execution—guessing user intent or
+        assuming common ground where none exists. Recent empirical
+        research highlights a substantial <em>grounding gap</em>,
+        showing that standard language models generate significantly
+        fewer grounding acts than humans in equivalent settings.
+    </p>
+
+    <p>The consequences of this grounding gap escalate with task
+        autonomy. In low-stakes conversational settings, assuming common
+        ground may result in minor inconvenience. In transactional,
+        multi-agent, or high-stakes environments—such as healthcare,
+        financial operations, or automated workflow management—executing
+        actions based on unverified assumptions leads to severe
+        failures, including incorrect database transactions, ungrounded
+        backend actions, or costly API errors.</p>
+
+    <p>
+        A primary technical challenge is that the term <em>grounding</em>
+        is currently used ambiguously across the software industry and
+        AI research communities, spanning multiple distinct layers:
+    </p>
+
+    <ul>
+        <li><strong>Conversational and Pragmatic
+                Grounding:</strong> The interactive alignment between
+            participants through dialogue acts—such as explicit
+            confirmations, clarifications, backchannels, and repairs—to
+            maintain a shared understanding over the course of a
+            conversation.</li>
+        <li><strong>Data and Knowledge Grounding:</strong>
+            Anchoring model outputs to external, verifiable factual
+            sources, enterprise ontologies, or knowledge repositories
+            (e.g., Retrieval-Augmented Generation) to prevent
+            hallucinations and ensure factual accuracy.</li>
+        <li><strong>World and System State Grounding:</strong>
+            Linking natural language expressions to backend database
+            schemas, physical sensor inputs, API payloads, and
+            authoritative operational states.</li>
+    </ul>
+
+    <p>Modern applications increasingly require multi-source hybrid
+        deployments where an agent must simultaneously maintain
+        conversational alignment with the user, validate factual
+        constraints against domain knowledge graphs, and execute state
+        changes in external backend systems. Without open standards and
+        interoperable abstractions, developers are forced to implement
+        fragmented, proprietary orchestration layers to map unstructured
+        conversational turns into structured system state updates.</p>
+
+    <p>Furthermore, as ecosystems transition toward collaborative
+        multi-agent architectures, autonomous agents must establish
+        shared protocols to exchange grounding acts, resolve information
+        discrepancies, and maintain clear boundaries between private
+        participant states and shared conversational facts. Without
+        standardization, multi-agent communication across different
+        platform providers becomes brittle, non-interoperable, and
+        difficult to monitor.</p>
+
+    <p>
+        This document represents a foundational step in establishing a
+        W3C strategy for <strong>Grounding Standardization</strong>. It
+        provides an architectural framework to unify conversational
+        grounding, knowledge anchoring, and backend state verification.
+        By defining open specifications for dialogue acts, context
+        partitioning, error repair sequences, and state reconciliation,
+        this standard aims to ensure seamless interoperability across
+        heterogeneous model providers, enterprise backends, and
+        multi-agent ecosystems.
+    </p>
+
+
+
+
+</body>
+</html>
