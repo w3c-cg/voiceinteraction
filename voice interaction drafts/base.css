@@ -131,3 +131,65 @@ figcaption {
 #toc .h6 {
     text-indent: 1.5in;
 }
+
+/* --- References & Citation Styles --- */
+
+/* Section spacing & structure */
+section#references, 
+.references {
+  margin-top: 2em;
+}
+
+/* Definition list container for reference items */
+dl.references, 
+section#references dl {
+  margin-left: 0;
+  padding-left: 0;
+}
+
+/* Reference Key/Label: [Lewis2020] */
+dl.references dt, 
+section#references dt {
+  font-family: Gill Sans, Gill Sans MT, sans-serif;
+  font-weight: bold;
+  color: #444;
+  margin-top: 1.2em;
+  margin-bottom: 0.2em;
+  float: left;
+  clear: left;
+  width: 9em; /* Fixed width for alignment */
+}
+
+/* Reference Body/Details */
+dl.references dd, 
+section#references dd {
+  margin-left: 9.5em; /* Offset matching dt width */
+  margin-bottom: 1.2em;
+  line-height: 1.45;
+}
+
+/* Title styling within reference items */
+dl.references cite, 
+section#references cite {
+  font-style: italic;
+  font-weight: normal;
+}
+
+/* Inline citation links in body text (e.g., [Lewis2020]) */
+a.citation, 
+a[href^="#ref-"] {
+  font-size: 0.9em;
+  vertical-align: super;
+  line-height: 0;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 0 1px;
+}
+
+/* Hover highlight on target reference entry when clicked */
+dl.references dd:target, 
+dl.references dt:target + dd,
+section#references :target {
+  background-color: #ffffcc;
+  transition: background-color 0.5s ease;
+}

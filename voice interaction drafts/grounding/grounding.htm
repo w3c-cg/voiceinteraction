@@ -4,7 +4,8 @@
     version="XHTML+RDFa 1.1" xmlns="http://www.w3.org/1999/xhtml"
     prefix='bibo: http://purl.org/ontology/bibo/' typeof="bibo:Document">
 <head>
-<title>Grounding Architecture and Interoperability Framework for Conversational AI</title>
+<title>Grounding Architecture and Interoperability Framework for
+    Conversational AI</title>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
 <link href="../cg-draft.css" rel="stylesheet" type="text/css">
 <script src="../html-table-of-contents.js" type="text/javascript"></script>
@@ -17,14 +18,17 @@
                 alt="W3C"></a>
         </p>
 
-        <h1 property="dcterms:title" class="title" id="title">Grounding Architecture and Interoperability Framework for Conversational AI</h1>
-        <h2 property="bibo:subtitle" id="subtitle">Landscape, Concepts, and Architectural Requirements</h2>
+        <h1 property="dcterms:title" class="title" id="title">Grounding
+            Architecture and Interoperability Framework for
+            Conversational AI</h1>
+        <h2 property="bibo:subtitle" id="subtitle">Landscape,
+            Concepts, and Architectural Requirements</h2>
         <dl>
             <dt>Latest version</dt>
             <dd>
                 Last modified: September 19, 2026 <a
                     href="https://github.com/w3c-cg/voiceinteraction/blob/master/voice%20interaction%20drafts/grounding/grounding.htm">
-                (GitHub repository)</a>
+                    (GitHub repository)</a>
             </dd>
             <dd>
                 <a
@@ -33,9 +37,10 @@
             </dd>
             <dt>Editors</dt>
             <dd>
-                Dirk Schnelle-Walka<br /> 
-                Deborah Dahl, Conversational Technologies<br />
-                Kristiina Jokinen, University of Helsinki
+                Dirk Schnelle-Walka<br /> Deborah Dahl, Conversational
+                Technologies<br /> Kristiina Jokinen, University of
+                Helsinki<br /> G&eacute;rad Chollet, CNRS,
+                T&eacute;l&eacute;com-Sud Paris
             </dd>
         </dl>
 
@@ -56,19 +61,16 @@
 
     <h2 id="abstract">Abstract</h2>
 
-    <p>This document describes a unified grounding architecture for
-        Intelligent Personal Assistants, conversational agents, and
-        Large Language Model (LLM)-driven autonomous systems, and
-        explores potential areas for standardization. It serves as a
-        first structured exploration of grounding in conversational AI
-        by identifying key architectural components, establishing
-        definitions across conversational, data, and system-state
-        grounding layers, and outlining their respective roles.
-        Subsequent work is expected to detail the interactions among
-        these identified components, formalize protocols for grounding
-        act exchanges, and define specifications for state verification
-        and schema mapping. This document may need to be updated as that
-        detailed specification work progresses.</p>
+    <p>This document describes a foundational step toward a W3C
+        standard for Grounding, designed to unify conversational
+        alignment, knowledge anchoring, and backend state verification.
+        As conversational AI systems deploy across critical operations,
+        standard language models often presume understanding rather than
+        verifying it. To resolve this, this standard defines open
+        specifications for dialogue acts, context partitioning, error
+        repair sequences, and state reconciliation—enabling seamless
+        interoperability across heterogeneous model providers,
+        enterprise systems, and multi-agent ecosystems.</p>
 
     <h2>Status of This Document</h2>
 
@@ -95,10 +97,10 @@
     <h2 class="introductory">Table of Contents</h2>
     <div id="toc"></div>
 
-    <!-- OddPage -->
     <h1 id="introduction">
-        <span class="secno">1. </span>Introduction
+        <span class="secno">1. </span>Motivation & Background
     </h1>
+
     <p>Intelligent Personal Assistants, conversational agents, and
         Large Language Model (LLM)-driven autonomous systems are
         increasingly integrated into daily life and critical business
@@ -110,86 +112,227 @@
         language models often operate by assuming understanding rather
         than actively verifying it.</p>
 
-    <p>
-        In human communication, effective collaboration relies on <strong>grounding</strong>.
-        By grounding, we understand an ongoing, interactive process of
-        establishing shared knowledge, mutual beliefs, and clear context
-        to prevent misunderstandings. Standard language models, by
-        contrast, are typically fine-tuned to follow direct
+    <p>In human communication, effective collaboration relies on
+        grounding. By grounding, we understand an ongoing, interactive
+        process of establishing shared knowledge, mutual beliefs, and
+        clear context to prevent misunderstandings. Standard language
+        models, by contrast, are typically fine-tuned to follow direct
         instructions. Rather than taking deliberate dialogue steps to
         clarify ambiguous requests, acknowledge key details, or repair
         misconceptions, current models tend to default to presumptive
-        execution—guessing user intent or assuming common ground where
-        none exists. Recent empirical research highlights a substantial
-        <em>grounding gap</em>, showing that standard language models
+        execution, hence guessing user intent or assuming common ground
+        where none exists. Recent empirical research highlights a
+        substantial grounding gap, showing that standard language models
         generate significantly fewer grounding acts than humans in
-        equivalent settings.
-    </p>
+        equivalent settings.</p>
 
-    <p>The consequences of this grounding gap escalate with task
-        autonomy. In low-stakes conversational settings, assuming common
-        ground may result in minor inconvenience. In transactional,
-        multi-agent, or high-stakes environments—such as healthcare,
-        financial operations, or automated workflow management—executing
-        actions based on unverified assumptions leads to severe
-        failures, including incorrect database transactions, ungrounded
-        backend actions, or costly API errors.</p>
+    <p>Current voice interaction architectures and dialogue
+        specifications often treat grounding purely as a low-level
+        interaction management mechanism (e.g., confirmations,
+        backchannels, or repair loops). However, modern multimodal voice
+        systems and Large Language Model (LLM) agents operate in
+        environments where grounding spans across dialogue, perception,
+        and external knowledge stores.</p>
 
-    <p>
-        A primary technical challenge is that the term <em>grounding</em>
-        is currently used ambiguously across the software industry and
-        AI research communities, spanning multiple distinct layers:
-    </p>
+    <p>This document represents a foundational step in establishing
+        a W3C strategy for Grounding Standardization. It provides first
+        steps to unify conversational grounding, knowledge anchoring,
+        and backend state verification. By defining open specifications
+        for dialogue acts, context partitioning, error repair sequences,
+        and state reconciliation, this standard aims to ensure seamless
+        interoperability across heterogeneous model providers,
+        enterprise backends, and multi-agent ecosystems.</p>
+
+    <h1 id="grounding">
+        <span class="secno">2. </span>Grounding in Voice Interaction
+    </h1>
+
+    <p>Definition of Grounding: In voice interaction systems and
+        conversational AI, grounding is the continuous, multi-layered
+        alignment process by which a system establishes and maintains
+        correspondence between spoken language utterances, the ongoing
+        dialogue state, external knowledge sources, and the physical or
+        visual environment.</p>
+
+    <p>At its core, grounding transforms arbitrary linguistic
+        symbols into actionable, mutually understood meaning. Rather
+        than treating speech purely as a stream of text to be parsed,
+        grounding ensures that an agent's internal representation,
+        generated outputs, and downstream actions are verifiably
+        anchored in three essential contexts:</p>
 
     <ul>
-        <li><strong>Conversational and Pragmatic
-                Grounding:</strong> The interactive alignment between
-            participants through dialogue acts—such as explicit
-            confirmations, clarifications, backchannels, and repairs—to
-            maintain a shared understanding over the course of a
-            conversation.</li>
-        <li><strong>Data and Knowledge Grounding:</strong>
-            Anchoring model outputs to external, verifiable factual
-            sources, enterprise ontologies, or knowledge repositories
-            (e.g., Retrieval-Augmented Generation) to prevent
-            hallucinations and ensure factual accuracy.</li>
-        <li><strong>World and System State Grounding:</strong>
-            Linking natural language expressions to backend database
-            schemas, physical sensor inputs, API payloads, and
-            authoritative operational states.</li>
+        <li>Dialogue Context: Shared operational understanding
+            between human and agent (Conversational Grounding)</li>
+        <li>Physical / Sensory Context: Concrete entities and
+            spatial realities observed in the environment (Perceptual
+            Grounding)</li>
+        <li>Factual Context: Verified, authoritative external
+            sources of truth (Knowledge Grounding)</li>
     </ul>
 
-    <p>Modern applications increasingly require multi-source hybrid
-        deployments where an agent must simultaneously maintain
-        conversational alignment with the user, validate factual
-        constraints against domain knowledge graphs, and execute state
-        changes in external backend systems. Without open standards and
-        interoperable abstractions, developers are forced to implement
-        fragmented, proprietary orchestration layers to map unstructured
-        conversational turns into structured system state updates.</p>
+    <h1 id="grounding">
+        <span class="secno">3. </span>Primary Grounding Types
+    </h1>
 
-    <p>Furthermore, as ecosystems transition toward collaborative
-        multi-agent architectures, autonomous agents must establish
-        shared protocols to exchange grounding acts, resolve information
-        discrepancies, and maintain clear boundaries between private
-        participant states and shared conversational facts. Without
-        standardization, multi-agent communication across different
-        platform providers becomes brittle, non-interoperable, and
-        difficult to monitor.</p>
+    <h2 id="conversational-grounding">
+        <span class="secno">3.1 </span>Conversational Grounding
+    </h2>
+
+    <p>Definition: Conversational grounding is the ongoing
+        interactive process by which dialogue participants coordinate to
+        establish, update, and maintain a shared body of mutual
+        understanding—commonly termed common ground.</p>
+
+    <p>Rather than treating communication as an unverified one-way
+        transmission, conversational grounding relies on dynamic,
+        bidirectional feedback loops managed through specific grounding
+        acts:</p>
+
+    <ul>
+        <li>Positive Feedback & Acknowledgments: Signals such as
+            backchannels (“uh-huh”, “okay”, “got it”) or implicit
+            confirmations that acknowledge receipt and comprehension.</li>
+        <li>Explicit Confirmations: Prompts used when confidence is
+            moderate, asking the speaker to verify intent (e.g., “Did
+            you mean 9:00 AM tomorrow?”).</li>
+        <li>Repair Strategies & Clarifications: Targeted dialogue
+            moves triggered when ambiguity, high intent entropy, or
+            conflicting information is detected.</li>
+    </ul>
 
     <p>
-        This document represents a foundational step in establishing a
-        W3C strategy for <strong>Grounding Standardization</strong>. It
-        provides an architectural framework to unify conversational
-        grounding, knowledge anchoring, and backend state verification.
-        By defining open specifications for dialogue acts, context
-        partitioning, error repair sequences, and state reconciliation,
-        this standard aims to ensure seamless interoperability across
-        heterogeneous model providers, enterprise backends, and
-        multi-agent ecosystems.
+        In voice user interfaces (VUIs), conversational grounding
+        replaces static single-turn prompting with an evolving,
+        persistent Information State (SHARED<sub>t</sub>). By updating
+        this shared state through explicit grounding acts, voice systems
+        bridge the presumptive grounding gap—preventing unintended voice
+        actions (e.g., executing an irreversible purchase or deleting
+        data based on misheard speech) and ensuring alignment between
+        user intent and agent execution <a class="citation"
+            href="#ref-traum-1994">[Traum1994]</a>.
     </p>
 
+    <h2 id="perceptual-grounding">
+        <span class="secno">3.2 </span>Perceptual Grounding
+    </h2>
 
+    <p>Definition: Perceptual grounding is the process of linking
+        abstract linguistic symbols, text tokens, and speech inputs
+        directly to continuous sensory observations of the physical or
+        virtual environment.</p>
+
+    <p>Perceptual grounding decouples top-down linguistic processing
+        from bottom-up sensorimotor observation, mapping spoken words to
+        dynamic perceptual states through key processes:</p>
+
+    <p>For embodied AI, smart home assistants, augmented reality
+        (AR) systems, and robotics, voice interactions do not occur in
+        isolation. Perceptual grounding enables voice assistants to
+        comprehend utterances in context, resolving ambiguous spoken
+        directives by indexing them directly against what the user and
+        system jointly observe in their shared physical space. Key
+        Reference: Cangelosi, A. (2010). Grounding language in action
+        and perception: From cognitive agents to humanoid robots.
+        Physics of Life Reviews, 7(2), 139–151.</p>
+
+    <ul>
+        <li>Sensorimotor Symbol Binding: Linking high-level
+            vocabulary (e.g., color, shape, texture, affordance) to
+            low-level sensory features captured via cameras, LIDAR, or
+            spatial audio channels.</li>
+        <li>Active Situational / World Modeling: Maintaining a
+            real-time representation of the environment that
+            continuously ingests sensor streams and tracks object
+            states, positions, and spatial relationships.</li>
+        <li>Indexical Reference Resolution: Translating deictic
+            expressions and relative spatial terms (such as “this
+            object”, “the red mug on the left”, or “behind you”) into
+            concrete bounding boxes, 3D spatial coordinates, or robotic
+            execution vectors.</li>
+    </ul>
+
+    <p>
+        For embodied AI, smart home assistants, augmented reality (AR)
+        systems, and robotics, voice interactions do not occur in
+        isolation. Perceptual grounding enables voice assistants to
+        comprehend utterances in context, resolving ambiguous spoken
+        directives by indexing them directly against what the user and
+        system jointly observe in their shared physical space <a
+            class="citation" href="#ref-cangelosi-2010">[Cangelosi2010]</a>.
+    </p>
+
+    <h2 id="knowledge-grounding">
+        <span class="secno">3.3 </span>Knowledge Grounding
+    </h2>
+
+    <p>Definition: Knowledge grounding is the process of anchoring
+        natural language understanding and generation in authoritative,
+        external sources of truth, such as enterprise databases,
+        knowledge graphs, domain ontologies, or document repositories.</p>
+
+    <p>Large Language Models (LLMs) rely on parametric weights
+        learned during pre-training, which can lead to factual
+        hallucinations or outdated responses. Knowledge grounding
+        mitigates this through non-parametric architectures:</p>
+
+    <ul>
+        <li>Retrieval-Augmented Generation (RAG): User queries are
+            transformed into dense or sparse vector representations,
+            queried against indexed external knowledge bases, and the
+            retrieved context passages ($z$) are injected directly into
+            the LLM prompt context $[x; z]$.</li>
+        <li>Ontological Schema Mapping: Translating unstructured
+            natural language into explicit entities, functional
+            attributes, and structured graph representations (such as
+            hypergraphs or Open Knowledge Formats) to enforce strict
+            semantic constraints before execution.</li>
+        <li>Verifiable Attribution & Auditing: Conditioning token
+            output probabilities strictly on retrieved evidence,
+            enabling voice agents to provide explicit citations, source
+            attribution, and verifiable answers.</li>
+    </ul>
+
+    <p>
+        In voice-driven information retrieval and enterprise
+        applications, knowledge grounding guarantees factual
+        correctness, domain compliance, and safety. By constraining the
+        LLM's response generation to verified external context, voice
+        systems eliminate speculative hallucinations and ensure that
+        spoken responses are accurate, traceable, and authoritative <a
+            class="citation" href="#ref-lewis-2020">[Lewis2020].</a>
+    </p>
+
+    <section id="references">
+    <h1>References</h1>
+    <dl class="references">
+        <dt id="ref-cangelosi-2010">[Cangelosi2010]</dt>
+        <dd>
+            Cangelosi, A. (2010). <cite><a
+                href="https://doi.org/10.1016/j.plrev.2010.02.001"
+                target="_blank" rel="noopener noreferrer">Grounding
+                    language in action and perception: From cognitive
+                    agents to humanoid robots</a></cite>. In <em>Physics of
+                Life Reviews</em>, 7(2), 139–151.
+        </dd>
+        <dt id="ref-lewis-2020">[Lewis2020]</dt>
+        <dd>
+            Lewis, P., Perez, E., Piktus, A., et al. (2020). <cite><a
+                href="https://arxiv.org/abs/2005.11401">Retrieval-Augmented
+                    Generation for Knowledge-Intensive NLP Tasks</a></cite>. In <em>Advances
+                in Neural Information Processing Systems (NeurIPS)</em>, 33,
+            9459–9474.
+        </dd>
+
+        <dt id="ref-traum-1994">[Traum1994]</dt>
+        <dd>
+            Traum, D. R. (1994). <cite>A computational theory of
+                grounding in natural language conversation</cite>. Doctoral
+            dissertation, University of Rochester.
+        </dd>
+
+    </dl>
+    </section>
 
 </body>
 </html>
